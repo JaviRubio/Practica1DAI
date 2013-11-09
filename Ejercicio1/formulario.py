@@ -1,4 +1,4 @@
-''' Mi repositorio para las actividades de infraestructuras de virtualizacion
+''' Mi repositorio para las practicas de desarrollo de aplicaciones informaticas
     Copyright (C) 2013  JaviRubio
 
     This program is free software; you can redistribute it and/or modify
