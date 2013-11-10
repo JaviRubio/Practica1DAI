@@ -1,0 +1,32 @@
+<%inherit file='base.html'/>
+
+ <%def name="title()">
+    <h1>Ejercicio 2 de DAI</h1>
+  </%def>
+
+
+
+<%def name='leftColumnTitle()'>
+	<p>
+		Epsum factorial non deposit quid pro quo hic escorol. Olypian quarrels et gorilla
+	</p>
+</%def>
+
+<%def name='menu()'>
+	<ul>
+ 	<li><a href="/">Inicio</a></li>
+ 	<li><a href="about.html">Descargas</a></li> 	
+ 	<li><a href="archives.html">Online</a></li>
+  	<li><a href="writing.html">Colaboraciones</a></li>
+ 	<li><a href="speaking.html">Foros</a></li>
+ 	<li><a href="contact.html">Contactar</a></li>
+  </ul>
+</%def>
+
+<%def name='rightColumnTitle()'>
+	${next.rightColumnTitle()}
+</%def>
+
+<%def name='rightColumnContent()'>
+	${next.rightColumnContent()}
+</%def>
