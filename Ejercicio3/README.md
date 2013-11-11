@@ -1,4 +1,4 @@
-###Ejercicio 3###
+##Ejercicio 3##
 
 Con este ejercicio he tenido muchos problemas:
 
@@ -9,7 +9,7 @@ ya que de lo contrario me habria quedado parado.
 -Tiene algunos bugs sin depurar:Me habria gustado dedicarle mas tiempo y dejarla pulida del todo, pero me ha sido
 fisicamente imposible
 
-##Funcionamiento##
+###Funcionamiento###
 
 Esta aplicación se basa en un usuario ficticio puesto en el codigo con nombre usuario y contraseña usuario.
 
