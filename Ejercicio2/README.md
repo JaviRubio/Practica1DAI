@@ -1,4 +1,4 @@
-===Este es el segundo ejercicio.===
+###Ejercicio 2###
 
 En este ejercicio presento una web muy sencilla creada a partir de una plantilla de mako.
 
