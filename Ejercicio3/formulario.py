@@ -20,6 +20,8 @@
 import web
 from web import form
 
+from web.contrib.template import render_mako
+
 urls = (
         '/index(.*)', 'index',
         '/about(.*)', 'about',
@@ -30,9 +32,13 @@ urls = (
         '/logout(.*)','logout',
         )
 
-plantilla = web.template.render('./templates/')
+app = web.application(urls, globals(), autoreload=True)
 
-app = web.application(urls, globals())
+render = render_mako(
+        directories=['templates'],
+        input_encoding='utf-8',
+        output_encoding='utf-8',
+        )
 
 
 
@@ -55,15 +61,16 @@ class index:
             session.pag3=session.pag2
             session.pag2=session.pag1
             session.pag1='index.html'
-        return plantilla.index(session.user, form,session.pag1,session.pag2,session.pag3)
+        #return plantilla.index(session.user, form,session.pag1,session.pag2,session.pag3)
+        return render.index(formLogin=form.render(),user=session.user,pag1=session.pag1,pag2=session.pag2,pag3=session.pag3)
 
     def POST(self,name):
         form=signin_form()
         if not form.validates(): 
-            return plantilla.index(session.user, form)
+            return render.index(formLogin=form.render(),user=session.user,pag1=session.pag1,pag2=session.pag2,pag3=session.pag3)
         else:
             session.user = form['username'].value
-            return plantilla.index(session.user, form,session.pag1,session.pag2,session.pag3)
+            return render.index(formLogin=form.render(),user=session.user,pag1=session.pag1,pag2=session.pag2,pag3=session.pag3)
 
 class about:
     def GET(self,name):
@@ -72,15 +79,15 @@ class about:
             session.pag3=session.pag2
             session.pag2=session.pag1
             session.pag1='about.html'
-        return plantilla.about(session.user, form,session.pag1,session.pag2,session.pag3)
+        return render.about(formLogin=form.render(),user=session.user,pag1=session.pag1,pag2=session.pag2,pag3=session.pag3)
 
     def POST(self,name):
         form=signin_form()
         if not form.validates(): 
-            return plantilla.about(session.user, form)
+            return render.about(formLogin=form.render(),user=session.user,pag1=session.pag1,pag2=session.pag2,pag3=session.pag3)
         else:
             session.user = form['username'].value
-            return plantilla.about(session.user, form,session.pag1,session.pag2,session.pag3)
+            return render.about(formLogin=form.render(),user=session.user,pag1=session.pag1,pag2=session.pag2,pag3=session.pag3)
 
 class archives:
     def GET(self,name):
@@ -89,15 +96,15 @@ class archives:
             session.pag3=session.pag2
             session.pag2=session.pag1
             session.pag1='archives.html'
-        return plantilla.archives(session.user, form,session.pag1,session.pag2,session.pag3)
+        return render.archives(formLogin=form.render(),user=session.user,pag1=session.pag1,pag2=session.pag2,pag3=session.pag3)
 
     def POST(self,name):
         form=signin_form()
         if not form.validates(): 
-            return plantilla.archives(session.user, form)
+            return render.archives(formLogin=form.render(),user=session.user,pag1=session.pag1,pag2=session.pag2,pag3=session.pag3)
         else:
             session.user = form['username'].value
-            return plantilla.archives(session.user, form,session.pag1,session.pag2,session.pag3)
+            return render.archives(formLogin=form.render(),user=session.user,pag1=session.pag1,pag2=session.pag2,pag3=session.pag3)
 
 class writing:
     def GET(self,name):
@@ -106,15 +113,15 @@ class writing:
             session.pag3=session.pag2
             session.pag2=session.pag1
             session.pag1='writing.html'
-        return plantilla.writing(session.user, form,session.pag1,session.pag2,session.pag2)
+        return render.writing(formLogin=form.render(),user=session.user,pag1=session.pag1,pag2=session.pag2,pag3=session.pag3)
 
     def POST(self,name):
         form=signin_form()
         if not form.validates(): 
-            return plantilla.writing(session.user, form)
+            return render.writing(formLogin=form.render(),user=session.user,pag1=session.pag1,pag2=session.pag2,pag3=session.pag3)
         else:
             session.user = form['username'].value
-            return plantilla.writing(session.user, form,session.pag1,session.pag2,session.pag3)
+            return render.writing(formLogin=form.render(),user=session.user,pag1=session.pag1,pag2=session.pag2,pag3=session.pag3)
 
 class speaking:
     def GET(self,name):
@@ -123,16 +130,15 @@ class speaking:
             session.pag3=session.pag2
             session.pag2=session.pag1
             session.pag1='speaking.html'
-        return plantilla.speaking(session.user, form,session.pag1,session.pag2,session.pag3)
+        return render.speaking(formLogin=form.render(),user=session.user,pag1=session.pag1,pag2=session.pag2,pag3=session.pag3)
 
     def POST(self,name):
         form=signin_form()
         if not form.validates(): 
-            return plantilla.speaking(session.user, form)
+            return render.speaking(formLogin=form.render(),user=session.user,pag1=session.pag1,pag2=session.pag2,pag3=session.pag3)
         else:
             session.user = form['username'].value
-            return plantilla.speaking(session.user, form,session.pag1,session.pag2,session.pag3)
-
+            return render.speaking(formLogin=form.render(),user=session.user,pag1=session.pag1,pag2=session.pag2,pag3=session.pag3)
 class contact:
     def GET(self,name):
         form=signin_form()
@@ -140,15 +146,15 @@ class contact:
             session.pag3=session.pag2
             session.pag2=session.pag1
             session.pag1='contact.html'
-        return plantilla.index(session.user, form,session.pag1,session.pag2,session.pag3)
+        return render.contact(formLogin=form.render(),user=session.user,pag1=session.pag1,pag2=session.pag2,pag3=session.pag3)
 
     def POST(self,name):
         form=signin_form()
         if not form.validates(): 
-            return plantilla.index(session.user, form)
+            return render.contact(formLogin=form.render(),user=session.user,pag1=session.pag1,pag2=session.pag2,pag3=session.pag3)
         else:
             session.user = form['username'].value
-            return plantilla.index(session.user, form,session.pag1,session.pag2,session.pag3)
+            return render.contact(formLogin=form.render(),user=session.user,pag1=session.pag1,pag2=session.pag2,pag3=session.pag3)
 
 class logout:
     def GET(self,name):

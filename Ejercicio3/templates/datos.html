@@ -4,7 +4,17 @@
     <h1>Ejercicio 2 de DAI</h1>
   </%def>
 
-
+<%def name='formulario()'>
+	% if user=='anonymous':
+		<form id="main" method="post">
+			${formLogin}
+			 <input type="submit" name="button" value="Login" />	
+		</form>
+	% else:
+  			<p>You are logged in as: ${user}</p>
+		    <p><a href="logout">Logout</a></p>
+	% endif
+</%def>
 
 <%def name='leftColumnTitle()'>
 	<p>
@@ -20,6 +30,15 @@
   	<li><a href="writing.html">Colaboraciones</a></li>
  	<li><a href="speaking.html">Foros</a></li>
  	<li><a href="contact.html">Contactar</a></li>
+ 	% if pag1!='vacio':
+		<li><a href=${pag1}>Atras 1</a></li>
+	%endif
+	% if pag2!='vacio':
+		<li><a href=${pag2}>Atras 2</a></li>
+	%endif
+	% if pag3!='vacio':
+		<li><a href=${pag3}>Atras 3</a></li>
+	%endif
   </ul>
 </%def>
 

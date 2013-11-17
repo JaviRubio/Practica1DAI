@@ -84,7 +84,7 @@
 			background:grey;
 			height:50px;
 			}
-			form{
+			#login{
 				position: absolute;
 				top:1px;
 				left:950px;
@@ -96,13 +96,9 @@
 		<header id="cabecera">
 			<img src="./static/logo.png">
 			${next.title()}
-			<form name="main" method="post">
-			  	<!-- valid(self, value), es un método de Validator(self, msg, test, jstest=None)
-			  	y de regexp(self, rexp, msg), que hacen parte del type Textbox 
-				$if not form.valid: <p class="error">Intenta de Nuevo</p>-->
-				<%form.render()%>
-				<input type="submit" />
-			</form>
+			<div id="login">
+				${next.formulario()}
+			</div>
 		</header>
 		<div id="columnaIzq">
 			${next.leftColumnTitle()}
