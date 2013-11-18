@@ -1,6 +1,3 @@
-# encoding: utf-8
-# File: code.py
-
 # Practicas de Desarrollo de Aplicaciones para Internet (DAI)
 # Copyright (C) 2013 - Javier(jvr20@correo.ugr.es)
 #    
@@ -18,13 +15,16 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import web
 import anydbm
 from web import form
+from web.contrib.template import render_mako
 from datetime import date
 
 urls = (
-        '/index(.*)', 'index',
         '/about(.*)', 'about',
         '/archives(.*)', 'archives',
         '/writing(.*)', 'writing',
@@ -32,36 +32,24 @@ urls = (
         '/contact(.*)', 'contact',
         '/logout(.*)','logout',
         '/register(.*)','register'
+        '/(.*)', 'index'
         )
 
-plantilla = web.template.render('./templates/')
+app = web.application(urls, globals(), autoreload=True)
 
-app = web.application(urls, globals())
-
-
+render = render_mako(
+        directories=['templates'],
+        input_encoding='utf-8',
+        output_encoding='utf-8',
+        )
 
 if web.config.get('_session') is None:
-    session = web.session.Session(app, web.session.DiskStore('sessions'),initializer={'user': 'anonymous','pag1' : 'vacio','pag2' : 'vacio','pag3' : 'vacio'})
+    session = web.session.Session(app, web.session.DiskStore('sessions'),initializer={'user': 'anonymous','pag0' : 'vacio','pag1' : 'vacio','pag2' : 'vacio','pag3' : 'vacio'})
     web.config._session = session
 else:
     session = web.config._session
 
 db = anydbm.open('/tmp/example.db', 'c')
-
-'''def logUser(nombre,password):
-    web.debug(nombre)
-    web.debug(password)
-    try:
-        web.debug(db[str(nombre)])
-        if db[str(nombre)]==str(nombre):
-            web.debug('paso1')
-            if db[str(nombre)+'Pass']==str(password):
-                web.debug('paso2')
-                return true
-        return false
-    except:
-         web.debug('Exception')
-         return false'''
 
 def newUser(nombre,apellidos,password,dni,correo,visa,fecha1,fecha2,fecha3,direccion,pago,clausulas):
     nombre=str(nombre)
@@ -132,16 +120,15 @@ class index:
         if session.user!='anonymous':
             session.pag3=session.pag2
             session.pag2=session.pag1
-            session.pag1='index.html'
-        return plantilla.index(session.user, form,session.pag1,session.pag2,session.pag3)
+            session.pag1=session.pag0
+            session.pag0='index.html'
+        return render.index(formLogin=form.render(),user=session.user,pag1=session.pag1,pag2=session.pag2,pag3=session.pag3)
 
     def POST(self,name):
         form=signin_form()
-        if not form.validates(): 
-            return plantilla.index(session.user, form,session.pag1,session.pag2,session.pag3)
-        else:
+        if form.validates(): 
             session.user = form['username'].value
-            return plantilla.index(session.user, form,session.pag1,session.pag2,session.pag3)
+        return render.index(formLogin=form.render(),user=session.user,pag1=session.pag1,pag2=session.pag2,pag3=session.pag3)
 
 class about:
     def GET(self,name):
@@ -149,16 +136,10 @@ class about:
         if session.user!='anonymous':
             session.pag3=session.pag2
             session.pag2=session.pag1
-            session.pag1='about.html'
-        return plantilla.about(session.user, form,session.pag1,session.pag2,session.pag3)
+            session.pag1=session.pag0
+            session.pag0='about.html'
+        return render.about(formLogin=form.render(),user=session.user,pag1=session.pag1,pag2=session.pag2,pag3=session.pag3)
 
-    def POST(self,name):
-        form=signin_form()
-        if not form.validates(): 
-            return plantilla.about(session.user, form)
-        else:
-            session.user = form['username'].value
-            return plantilla.about(session.user, form,session.pag1,session.pag2,session.pag3)
 
 class archives:
     def GET(self,name):
@@ -166,16 +147,9 @@ class archives:
         if session.user!='anonymous':
             session.pag3=session.pag2
             session.pag2=session.pag1
-            session.pag1='archives.html'
-        return plantilla.archives(session.user, form,session.pag1,session.pag2,session.pag3)
-
-    def POST(self,name):
-        form=signin_form()
-        if not form.validates(): 
-            return plantilla.archives(session.user, form)
-        else:
-            session.user = form['username'].value
-            return plantilla.archives(session.user, form,session.pag1,session.pag2,session.pag3)
+            session.pag1=session.pag0
+            session.pag0='archives.html'
+        return render.archives(formLogin=form.render(),user=session.user,pag1=session.pag1,pag2=session.pag2,pag3=session.pag3)
 
 class writing:
     def GET(self,name):
@@ -183,16 +157,10 @@ class writing:
         if session.user!='anonymous':
             session.pag3=session.pag2
             session.pag2=session.pag1
-            session.pag1='writing.html'
-        return plantilla.writing(session.user, form,session.pag1,session.pag2,session.pag2)
+            session.pag1=session.pag0
+            session.pag0='writing.html'
+        return render.writing(formLogin=form.render(),user=session.user,pag1=session.pag1,pag2=session.pag2,pag3=session.pag3)
 
-    def POST(self,name):
-        form=signin_form()
-        if not form.validates(): 
-            return plantilla.writing(session.user, form)
-        else:
-            session.user = form['username'].value
-            return plantilla.writing(session.user, form,session.pag1,session.pag2,session.pag3)
 
 class speaking:
     def GET(self,name):
@@ -200,16 +168,9 @@ class speaking:
         if session.user!='anonymous':
             session.pag3=session.pag2
             session.pag2=session.pag1
-            session.pag1='speaking.html'
-        return plantilla.speaking(session.user, form,session.pag1,session.pag2,session.pag3)
-
-    def POST(self,name):
-        form=signin_form()
-        if not form.validates(): 
-            return plantilla.speaking(session.user, form)
-        else:
-            session.user = form['username'].value
-            return plantilla.speaking(session.user, form,session.pag1,session.pag2,session.pag3)
+            session.pag1=session.pag0
+            session.pag0='speaking.html'
+        return render.speaking(formLogin=form.render(),user=session.user,pag1=session.pag1,pag2=session.pag2,pag3=session.pag3)
 
 class contact:
     def GET(self,name):
@@ -217,16 +178,9 @@ class contact:
         if session.user!='anonymous':
             session.pag3=session.pag2
             session.pag2=session.pag1
-            session.pag1='contact.html'
-        return plantilla.index(session.user, form,session.pag1,session.pag2,session.pag3)
-
-    def POST(self,name):
-        form=signin_form()
-        if not form.validates(): 
-            return plantilla.index(session.user, form)
-        else:
-            session.user = form['username'].value
-            return plantilla.index(session.user,form,session.pag1,session.pag2,session.pag3)
+            session.pag1=session.pag0
+            session.pag0='contact.html'
+        return render.contact(formLogin=form.render(),user=session.user,pag1=session.pag1,pag2=session.pag2,pag3=session.pag3)
 
 class register:
     def GET(self,name):
@@ -235,7 +189,8 @@ class register:
         if session.user!='anonymous':
             session.pag3=session.pag2
             session.pag2=session.pag1
-            session.pag1='register.html'
+            session.pag1=session.pag0
+            session.pag0='register.html'
             data=loadUser(session.user)
             regis['nombre'].value=data[0]
             regis['apellidos'].value=data[1]
@@ -248,18 +203,16 @@ class register:
             regis['direccion'].value=data[8]
             regis['pago'].value=data[9]
             regis['condiciones'].value=data[10]
-        return plantilla.register(session.user,form,session.pag1,session.pag2,session.pag3,regis)
+        return render.register(formLogin=form.render(),user=session.user,pag1=session.pag1,pag2=session.pag2,pag3=session.pag3,register=regis.render())
 
     def POST(self,name):
         form=signin_form()
         regis=registerForm()
-        if not regis.validates(): 
-            return plantilla.register(session.user,form,session.pag1,session.pag2,session.pag3,regis)
-        else:
-            session.user = form['username'].value
+        if regis.validates(): 
+            session.user = regis['nombre'].value
             newUser(regis['nombre'].value,regis['apellidos'].value,regis['pass1'].value,regis['dni'].value,regis['correo'].value,regis['visa'].value,regis['dia'].value,regis['mes'].value,regis['anyo'].value,regis['direccion'].value,regis['pago'].value,regis['condiciones'].value)
-            return plantilla.register(session.user,form,session.pag1,session.pag2,session.pag3,regis)
-
+        return render.register(formLogin=form.render(),user=session.user,pag1=session.pag1,pag2=session.pag2,pag3=session.pag3,register=regis.render())
+       
 class logout:
     def GET(self,name):
         session.kill()

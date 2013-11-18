@@ -1,6 +1,3 @@
-# encoding: utf-8
-# File: code.py
-
 # Practicas de Desarrollo de Aplicaciones para Internet (DAI)
 # Copyright (C) 2013 - Javier(jvr20@correo.ugr.es)
 #    
@@ -17,19 +14,22 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 import web
 from web import form
 
 from web.contrib.template import render_mako
 
 urls = (
-        '/index(.*)', 'index',
         '/about(.*)', 'about',
         '/archives(.*)', 'archives',
         '/writing(.*)', 'writing',
         '/speaking(.*)', 'speaking',
         '/contact(.*)', 'contact',
         '/logout(.*)','logout',
+        '/(.*)', 'index'
         )
 
 app = web.application(urls, globals(), autoreload=True)
@@ -40,10 +40,8 @@ render = render_mako(
         output_encoding='utf-8',
         )
 
-
-
 if web.config.get('_session') is None:
-    session = web.session.Session(app, web.session.DiskStore('sessions'),initializer={'user': 'anonymous','pag1' : 'vacio','pag2' : 'vacio','pag3' : 'vacio'})
+    session = web.session.Session(app, web.session.DiskStore('sessions'),initializer={'user': 'anonymous','pag0' : 'vacio','pag1' : 'vacio','pag2' : 'vacio','pag3' : 'vacio'})
     web.config._session = session
 else:
     session = web.config._session
@@ -60,8 +58,8 @@ class index:
         if session.user=='usuario':
             session.pag3=session.pag2
             session.pag2=session.pag1
-            session.pag1='index.html'
-        #return plantilla.index(session.user, form,session.pag1,session.pag2,session.pag3)
+            session.pag1=session.pag0
+            session.pag0='index.html'
         return render.index(formLogin=form.render(),user=session.user,pag1=session.pag1,pag2=session.pag2,pag3=session.pag3)
 
     def POST(self,name):
@@ -78,7 +76,8 @@ class about:
         if session.user=='usuario':
             session.pag3=session.pag2
             session.pag2=session.pag1
-            session.pag1='about.html'
+            session.pag1=session.pag0
+            session.pag0='about.html'
         return render.about(formLogin=form.render(),user=session.user,pag1=session.pag1,pag2=session.pag2,pag3=session.pag3)
 
     def POST(self,name):
@@ -95,7 +94,8 @@ class archives:
         if session.user=='usuario':
             session.pag3=session.pag2
             session.pag2=session.pag1
-            session.pag1='archives.html'
+            session.pag1=session.pag0
+            session.pag0='archives.html'
         return render.archives(formLogin=form.render(),user=session.user,pag1=session.pag1,pag2=session.pag2,pag3=session.pag3)
 
     def POST(self,name):
@@ -112,7 +112,8 @@ class writing:
         if session.user=='usuario':
             session.pag3=session.pag2
             session.pag2=session.pag1
-            session.pag1='writing.html'
+            session.pag1=session.pag0
+            session.pag0='writing.html'
         return render.writing(formLogin=form.render(),user=session.user,pag1=session.pag1,pag2=session.pag2,pag3=session.pag3)
 
     def POST(self,name):
@@ -129,7 +130,8 @@ class speaking:
         if session.user=='usuario':
             session.pag3=session.pag2
             session.pag2=session.pag1
-            session.pag1='speaking.html'
+            session.pag1=session.pag0
+            session.pag0='speaking.html'
         return render.speaking(formLogin=form.render(),user=session.user,pag1=session.pag1,pag2=session.pag2,pag3=session.pag3)
 
     def POST(self,name):
@@ -145,7 +147,8 @@ class contact:
         if session.user=='usuario':
             session.pag3=session.pag2
             session.pag2=session.pag1
-            session.pag1='contact.html'
+            session.pag1=session.pag0
+            session.pag0='contact.html'
         return render.contact(formLogin=form.render(),user=session.user,pag1=session.pag1,pag2=session.pag2,pag3=session.pag3)
 
     def POST(self,name):
